@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixel Art Game</title>
+  <style>
+    body {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    canvas {
+      image-rendering: pixelated;
+      background: #222;
+      border: 4px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="256" height="256"></canvas>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const tileSize = 16;
+
+    const player = {
+      x: 5,
+      y: 5,
+      color: "#FFD700"
+    };
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw player
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x * tileSize, player.y * tileSize, tileSize, tileSize);
+    }
+
+    function movePlayer(dx, dy) {
+      player.x += dx;
+      player.y += dy;
+      draw();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowUp": movePlayer(0, -1); break;
+        case "ArrowDown": movePlayer(0, 1); break;
+        case "ArrowLeft": movePlayer(-1, 0); break;
+        case "ArrowRight": movePlayer(1, 0); break;
+      }
+    });
+
+    draw();
+  </script>
+</body>
+</html>
 
