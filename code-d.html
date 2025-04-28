@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixel Art Game</title>
+  <style>
+    body {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    canvas {
+      image-rendering: pixelated;
+      background: #222;
+      border: 4px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="256" height="256"></canvas>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const tileSize = 16;
+    const tilesX = canvas.width / tileSize;
+    const tilesY = canvas.height / tileSize;
+
+    const player = {
+      x: 5,
+      y: 5,
+      color: getRandomColor(),
+      borderColor: "#000000"
+    };
+
+    function getRandomColor() {
+      return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+    }
+
+    function invertColor(hex) {
+      let r = 255 - parseInt(hex.substr(1, 2), 16);
+      let g = 255 - parseInt(hex.substr(3, 2), 16);
+      let b = 255 - parseInt(hex.substr(5, 2), 16);
+      return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
+    }
+
+    function resetToCenter() {
+      player.x = Math.floor(tilesX / 2);
+      player.y = Math.floor(tilesY / 2);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw border (inverted color)
+      ctx.fillStyle = player.borderColor;
+      ctx.fillRect(player.x * tileSize - 1, player.y * tileSize - 1, tileSize + 2, tileSize + 2);
+
+      // Draw player
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x * tileSize, player.y * tileSize, tileSize, tileSize);
+    }
+
+    function movePlayer(dx, dy) {
+      player.x += dx;
+      player.y += dy;
+
+      // Check if out of bounds
+      if (player.x < 0 || player.x >= tilesX || player.y < 0 || player.y >= tilesY) {
+        resetToCenter();
+      }
+
+      player.color = getRandomColor();
+      player.borderColor = invertColor(player.color);
+      draw();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowUp": movePlayer(0, -1); break;
+        case "ArrowDown": movePlayer(0, 1); break;
+        case "ArrowLeft": movePlayer(-1, 0); break;
+        case "ArrowRight": movePlayer(1, 0); break;
+      }
+    });
+
+    draw();
+  </script>
+</body>
+</html>
