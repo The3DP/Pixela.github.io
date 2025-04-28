@@ -33,17 +33,29 @@
     const player = {
       x: 5,
       y: 5,
-      color: getRandomColor()
+      color: getRandomColor(),
+      borderColor: "#000000"
     };
 
     function getRandomColor() {
-      // Generate a random hex color
-      return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+      return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+    }
+
+    function invertColor(hex) {
+      let r = 255 - parseInt(hex.substr(1, 2), 16);
+      let g = 255 - parseInt(hex.substr(3, 2), 16);
+      let b = 255 - parseInt(hex.substr(5, 2), 16);
+      return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
     }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Draw border (inverted color)
+      ctx.fillStyle = player.borderColor;
+      ctx.fillRect(player.x * tileSize - 1, player.y * tileSize - 1, tileSize + 2, tileSize + 2);
+
+      // Draw player
       ctx.fillStyle = player.color;
       ctx.fillRect(player.x * tileSize, player.y * tileSize, tileSize, tileSize);
     }
@@ -51,7 +63,8 @@
     function movePlayer(dx, dy) {
       player.x += dx;
       player.y += dy;
-      player.color = getRandomColor(); // Change color
+      player.color = getRandomColor();
+      player.borderColor = invertColor(player.color);
       draw();
     }
 
