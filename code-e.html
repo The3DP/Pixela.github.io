@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixel Art Game Expanded</title>
+  <style>
+    body {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      font-family: sans-serif;
+    }
+
+    canvas {
+      image-rendering: pixelated;
+      background: #222;
+      border: 4px solid #fff;
+    }
+
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Steps: 0</div>
+  <canvas id="gameCanvas" width="256" height="256"></canvas>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const tileSize = 16;
+    const tilesX = canvas.width / tileSize;
+    const tilesY = canvas.height / tileSize;
+
+    let stepCount = 0;
+
+    const player = {
+      x: 5,
+      y: 5,
+      color: getRandomColor(),
+      borderColor: "#000000"
+    };
+
+    const obstacles = generateObstacles(20); // Generate 20 obstacles
+
+    function getRandomColor() {
+      return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+    }
+
+    function invertColor(hex) {
+      let r = 255 - parseInt(hex.substr(1, 2), 16);
+      let g = 255 - parseInt(hex.substr(3, 2), 16);
+      let b = 255 - parseInt(hex.substr(5, 2), 16);
+      return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
+    }
+
+    function resetToCenter() {
+      player.x = Math.floor(tilesX / 2);
+      player.y = Math.floor(tilesY / 2);
+    }
+
+    function generateObstacles(count) {
+      const obs = [];
+      while (obs.length < count) {
+        let x = Math.floor(Math.random() * tilesX);
+        let y = Math.floor(Math.random() * tilesY);
+        if (!(x === player.x && y === player.y) && !obs.some(o => o.x === x && o.y === y)) {
+          obs.push({ x, y });
+        }
+      }
+      return obs;
+    }
+
+    function isObstacle(x, y) {
+      return obstacles.some(o => o.x === x && o.y === y);
+    }
+
+    function drawGrid() {
+      ctx.strokeStyle = "#444";
+      for (let x = 0; x <= tilesX; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * tileSize, 0);
+        ctx.lineTo(x * tileSize, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= tilesY; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * tileSize);
+        ctx.lineTo(canvas.width, y * tileSize);
+        ctx.stroke();
+      }
+    }
+
+    function drawObstacles() {
+      ctx.fillStyle = "#AA0000";
+      obstacles.forEach(o => {
+        ctx.fillRect(o.x * tileSize, o.y * tileSize, tileSize, tileSize);
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGrid();
+      drawObstacles();
+
+      // Draw border
+      ctx.fillStyle = player.borderColor;
+      ctx.fillRect(player.x * tileSize - 1, player.y * tileSize - 1, tileSize + 2, tileSize + 2);
+
+      // Draw player
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x * tileSize, player.y * tileSize, tileSize, tileSize);
+
+      // Update score
+      document.getElementById("score").textContent = `Steps: ${stepCount}`;
+    }
+
+    function movePlayer(dx, dy) {
+      const newX = player.x + dx;
+      const newY = player.y + dy;
+
+      if (newX < 0 || newX >= tilesX || newY < 0 || newY >= tilesY || isObstacle(newX, newY)) {
+        return; // blocked
+      }
+
+      player.x = newX;
+      player.y = newY;
+      stepCount++;
+
+      player.color = getRandomColor();
+      player.borderColor = invertColor(player.color);
+      draw();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowUp": movePlayer(0, -1); break;
+        case "ArrowDown": movePlayer(0, 1); break;
+        case "ArrowLeft": movePlayer(-1, 0); break;
+        case "ArrowRight": movePlayer(1, 0); break;
+        case " ": // space to reset
+          resetToCenter();
+          stepCount = 0;
+          draw();
+          break;
+      }
+    });
+
+    resetToCenter();
+    draw();
+  </script>
+</body>
+</html>
 
