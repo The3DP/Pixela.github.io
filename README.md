@@ -1,7 +1,7 @@
 <p align="center"> Pixela
 
 ##
-Pixela is a super fun pixel art game that you can either play with or tweak it to provide your own unique design. See RTS below for details.
+Pixela is a super fun pixel art game that you can either play with or tweak to provide your own unique design. See RTS below for details.
 ##
  # What is "code-" ?
 
