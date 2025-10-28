@@ -3,11 +3,9 @@
 ##
 Pixela is a super fun pixel art game that you can either play with or tweak to provide your own unique design. See RTS below for details.
 ##
- # What is "code-" ?
-
-Code- is the file name and recognition name selected
-for all programs. You should find code-a
-the starter program and code-e the fully finished program.
+ ### Code Files
+ "Code Files" contains all the files with actual code.
+ All other files contain only instruction.
 ##
 Thank you for understanding the rules and regulations in LICENSE.
 For questions on this repository related to the "Creative Commons Legal Code
