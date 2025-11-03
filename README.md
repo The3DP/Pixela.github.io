@@ -24,3 +24,7 @@ Click on this link to go to
 their "Try it yourself" page which
 you can test my code on.
 *https://www.w3schools.com/html/tryit.asp?filename=tryhtml_default*
+
+# Updates: 
+This repo will also consist of 5 additional Python animations.
+This update should be expected in the near-future.
