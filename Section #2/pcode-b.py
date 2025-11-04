@@ -1,4 +1,7 @@
-#Text-based animation
+##
+# Text-based Animations
+##
+
 import random, os, time
 
 chars = "abcdefghijklmnopqrstuvwxyz0123456789"
