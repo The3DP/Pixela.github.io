@@ -1,5 +1,5 @@
 ##
-# Interactive 2D Animation
+# Interactive 2D Animations
 ##
 
 import pygame, random, sys
