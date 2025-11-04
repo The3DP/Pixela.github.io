@@ -1,5 +1,5 @@
 ##
-# Text-based animation
+# Text-based Animations
 ##
 
 import time, sys
