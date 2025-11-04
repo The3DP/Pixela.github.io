@@ -1,5 +1,5 @@
 ##
-# 2D Animation
+# 2D Animations
 ##
 
 import turtle, colorsys
