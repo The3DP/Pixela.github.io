@@ -1,4 +1,7 @@
+##
 # Text-based animation
+##
+
 import time, sys
 
 spinner = ['|', '/', '-', '\\']
